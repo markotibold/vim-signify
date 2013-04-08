@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>vim-signify by mhinz</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>vim-signify</h1>
+        <h2>A tutorial.</h2>
+        <a href="https://github.com/mhinz/vim-signify" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h2>vim-signify</h2>
+
+<p>Or just: <strong>sy</strong></p>
+
+<p>Sy shows all added, deleted and modified lines since the last commit via Vim its
+sign column. It <strong>supports several version control systems</strong>.</p>
+
+<p>It's <strong>fast</strong>, <strong>highly configurable</strong> and <strong>well documented</strong>.</p>
+
+<p>Features:</p>
+
+<ul>
+<li>supports git, mercurial, darcs, bazaar, subversion, cvs, rcs</li>
+<li>quick jumping between changed lines</li>
+<li>apart from signs there is also optional line highlighting</li>
+<li>fully configurable through global variables (options and mappings)</li>
+<li>optional preserving of signs from other plugins</li>
+<li>you can toggle the plugin per buffer</li>
+<li>skip certain filetypes and filenames</li>
+<li><p>good documentation</p></li>
+<li><p>quick developer response! :-)</p></li>
+</ul><p><img src="https://github.com/mhinz/vim-signify/raw/master/signify.png" alt="Example:signify in action"></p>
+
+<p>Limits exist only in your mind!</p>
+
+<h2>Feedback, please!</h2>
+
+<p>If you use any of my plugins, star it on github. This is a great way of getting
+feedback! Same for issues or feature requests.</p>
+
+<p>Thank you for flying mhi airlines. Get the Vim on!</p>
+
+<h2>What about vim-gitgutter?</h2>
+
+<p>To be honest, I don't understand why people always compare plugins like Sy to
+vim-gitgutter. I understand that it is by far the most known one, but primarily
+because it was featured on the Hacker News frontpage.</p>
+
+<p>Don't get me wrong, I don't intend to badmouth gitgutter, I even contributed to
+it once. (Granted, it was only a small fix.) And I'm glad about everyone
+contributing to the Vim community, but there are two important facts one should
+consider:</p>
+
+<ol>
+<li><p>There were other plugins providing the same functionality as gitgutter years
+before its creation.</p></li>
+<li><p>Sy provides a superset of gitgutter.</p></li>
+</ol><p>So here is the short answer: The main difference is Sy its support for version
+control systems other than git. Moreover, two of its design goals are speed and
+high configurability.</p>
+
+<h2>Sign explanation</h2>
+
+<p><code>+</code></p>
+
+<p>A new line was added. The sign is shown on the same line as the new line.</p>
+
+<p><code>_</code></p>
+
+<p>A line was deleted. The sign is shown on the line above the deleted line. Special case: The first line was deleted. In this case the sign is shown on the same line.</p>
+
+<p><code>!</code></p>
+
+<p>A line was changed. Something was changed, but the amount of lines stayed the same. The sign is shown on the same line.</p>
+
+<p><code>!_</code></p>
+
+<p>A line was changed and one or more of the lines below were deleted. A combination of <strong>!</strong> and <strong>_</strong>. The sign is shown on the same line.</p>
+
+<h2>Longer introduction</h2>
+
+<h4>supports several version control systems</h4>
+
+<p>This plugin is based on the diffing features of the supported version control
+systems. Since not all VCS support the same options, sometimes we have to fall
+back to the 'diff' executable.</p>
+
+<p>Current the following VCS are supported:</p>
+
+<ul>
+<li>git</li>
+<li>mercurial (hg)</li>
+<li>bazaar (bzr)</li>
+<li>darcs</li>
+<li>subversion (svn)</li>
+<li>cvs</li>
+<li>rcs</li>
+</ul><h4>quick jumping between changed lines</h4>
+
+<p>There are mappings for jumping forth and back between changed lines (so-called
+hunks). The following example shows the default mappings and how to change them:</p>
+
+<div class="highlight"><pre><span class="k">let</span> <span class="k">g</span>:signify_mapping_next_hunk <span class="p">=</span> <span class="s1">'&lt;leader&gt;gj'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_mapping_prev_hunk <span class="p">=</span> <span class="s1">'&lt;leader&gt;gk'</span>
+</pre></div>
+
+<p>Note: In case you don't know about the mapleader, have a look at <code>:h mapleader</code>.
+The default is the '\' button.</p>
+
+<p>Following Vim conventions you can also use <strong>]c</strong> and <strong>[c</strong>.</p>
+
+<h4>apart from signs there is also optional line highlighting</h4>
+
+<p>Sy shows you signs for changed lines. Moveover, you can enable highlighting of
+the concerned lines:</p>
+
+<div class="highlight"><pre><span class="k">let</span> <span class="k">g</span>:signify_mapping_toggle_highlight <span class="p">=</span> <span class="s1">'&lt;leader&gt;gh'</span>
+</pre></div>
+
+<p>You can also change the highlighting classes for these lines. The defaults are:</p>
+
+<div class="highlight"><pre><span class="k">let</span> <span class="k">g</span>:signify_line_color_add    <span class="p">=</span> <span class="s1">'DiffAdd'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_line_color_delete <span class="p">=</span> <span class="s1">'DiffDelete'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_line_color_change <span class="p">=</span> <span class="s1">'DiffChange'</span>
+</pre></div>
+
+<h4>you can toggle the plugin per buffer</h4>
+
+<p>In case you want to disable the plugin for the current buffer, you can toggle
+it:</p>
+
+<div class="highlight"><pre><span class="k">let</span> <span class="k">g</span>:signify_mapping_toggle <span class="p">=</span> <span class="s1">'&lt;leader&gt;gt'</span>
+</pre></div>
+
+<h4>skip certain filetypes and filenames</h4>
+
+<p>If you want to disable Sy for certain kinds of filename or file types,
+you explicitely have to create "skip dicts":</p>
+
+<p>Example:</p>
+
+<div class="highlight"><pre><span class="k">let</span> <span class="k">g</span>:signify_skip_filetype <span class="p">=</span> { <span class="s1">'vim'</span>: <span class="m">1</span><span class="p">,</span> <span class="s1">'c'</span>: <span class="m">1</span> }
+<span class="k">let</span> <span class="k">g</span>:signify_skip_filename <span class="p">=</span> { <span class="s1">'/home/user/.vimrc'</span>: <span class="m">1</span> }
+</pre></div>
+
+<p><strong>NOTE</strong>: Filenames have to be absolute paths!</p>
+
+<h4>good documentation</h4>
+
+<p>You should know by now!</p>
+
+<h2>Installation</h2>
+
+<p>If you have no preferred installation method, I suggest using tpope's pathogen:</p>
+
+<ol>
+<li>git clone <a href="https://github.com/tpope/vim-pathogen">https://github.com/tpope/vim-pathogen</a> ~/.vim/bundle/vim-pathogen</li>
+<li>mkdir -p ~/.vim/autoload &amp;&amp; cd ~/.vim/autoload</li>
+<li>ln -s ../bundle/vim-pathogen/autoload/pathogen.vim</li>
+</ol><p>Afterwards installing Sy is as easy as pie:</p>
+
+<ol>
+<li>git clone <a href="https://github.com/mhinz/vim-signify">https://github.com/mhinz/vim-signify</a> ~/.vim/bundle/vim-signify</li>
+<li>start Vim</li>
+<li>:Helptags</li>
+<li>:h signify</li>
+</ol><h2>Documentation</h2>
+
+<p><code>:h signify</code></p>
+
+<h2>Configuration</h2>
+
+<p>For more info: <code>:h signify-options</code></p>
+
+<p><strong>NOTE</strong>: The shown assignments are only examples, not defaults.</p>
+
+<div class="highlight"><pre><span class="k">let</span> <span class="k">g</span>:signify_vcs_list <span class="p">=</span> [ <span class="s1">'git'</span><span class="p">,</span> <span class="s1">'hg'</span> ]
+
+<span class="k">let</span> <span class="k">g</span>:signify_mapping_next_hunk <span class="p">=</span> <span class="s1">'&lt;leader&gt;gj'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_mapping_prev_hunk <span class="p">=</span> <span class="s1">'&lt;leader&gt;gk'</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_mapping_toggle_highlight <span class="p">=</span> <span class="s1">'&lt;leader&gt;gh'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_mapping_toggle           <span class="p">=</span> <span class="s1">'&lt;leader&gt;gt'</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_skip_filetype <span class="p">=</span> { <span class="s1">'vim'</span>: <span class="m">1</span><span class="p">,</span> <span class="s1">'c'</span>: <span class="m">1</span> }
+<span class="k">let</span> <span class="k">g</span>:signify_skip_filename <span class="p">=</span> { <span class="s1">'/home/user/.vimrc'</span>: <span class="m">1</span> }
+
+<span class="k">let</span> <span class="k">g</span>:signify_sign_overwrite <span class="p">=</span> <span class="m">1</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_update_on_bufenter <span class="p">=</span> <span class="m">1</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_line_highlight <span class="p">=</span> <span class="m">1</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_sign_add               <span class="p">=</span> <span class="s1">'+'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_delete            <span class="p">=</span> <span class="s1">'-'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_change            <span class="p">=</span> <span class="s1">'*'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_delete_first_line <span class="p">=</span> <span class="s1">'‾'</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_guifg_add      <span class="p">=</span> <span class="s1">'#00ff00'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_guifg_delete   <span class="p">=</span> <span class="s1">'#ff0000'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_guifg_change   <span class="p">=</span> <span class="s1">'#ffff00'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_guibg          <span class="p">=</span> <span class="s1">'#111111'</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_ctermfg_add    <span class="p">=</span> <span class="m">2</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_ctermfg_delete <span class="p">=</span> <span class="m">1</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_ctermfg_change <span class="p">=</span> <span class="m">3</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_ctermbg        <span class="p">=</span> <span class="m">0</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_group_add    <span class="p">=</span> <span class="s1">'MyAdd'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_group_delete <span class="p">=</span> <span class="s1">'MyDelete'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_sign_color_group_change <span class="p">=</span> <span class="s1">'MyChange'</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_line_color_add    <span class="p">=</span> <span class="s1">'DiffAdd'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_line_color_delete <span class="p">=</span> <span class="s1">'DiffDelete'</span>
+<span class="k">let</span> <span class="k">g</span>:signify_line_color_change <span class="p">=</span> <span class="s1">'DiffChange'</span>
+
+<span class="k">let</span> <span class="k">g</span>:signify_cursorhold_normal <span class="p">=</span> <span class="m">1</span>
+<span class="k">let</span> <span class="k">g</span>:signify_cursorhold_insert <span class="p">=</span> <span class="m">1</span>
+</pre></div>
+
+<h2>Author</h2>
+
+<p>Marco Hinz <code>&lt;mh.codebro@gmail.com&gt;</code></p>
+
+<h2>License</h2>
+
+<p>Copyright © Marco Hinz. Distributed under the same terms as Vim itself. See
+<code>:help license</code>.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/mhinz/vim-signify/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/mhinz/vim-signify/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/mhinz/vim-signify"></a> is maintained by <a href="https://github.com/mhinz">mhinz</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
