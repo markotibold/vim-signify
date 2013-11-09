@@ -70,6 +70,20 @@ function! sy#repo#get_diff_git(path) abort
   return v:shell_error ? [0, ''] : [1, diff]
 endfunction
 
+" Function: #get_git {{{1
+function Foo() abort
+  let orig = system('cd '. sy#util#escape(expand('%:p:h')) .' && git show HEAD:./'. expand('%:t'))
+  if v:shell_error
+    echoerr 'GURU MEDITATION'
+  endif
+  enew
+  setlocal buftype=nofile bufhidden=hide nobuflisted diff
+  call setline(1, split(orig, '\n'))
+  buffer #
+  setlocal diff
+  autocmd InsertLeave,CursorHold <buffer> diffupdate
+endfunction
+
 " Function: #get_stat_git {{{1
 function! sy#repo#get_stat_git() abort
   let s:stats = []
