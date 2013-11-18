@@ -10,8 +10,8 @@ function! sy#sign#get_others(path) abort
     silent! execute 'sign place file='. a:path
   redir END
 
-  for line in filter(split(signlist, '\n'), 'v:val =~ "^\\s\\+line"')
-    let lnum = matchlist(line, '\v^\s+line\=(\d+)')[1]
+  for line in filter(split(signlist, '\n'), 'v:val =~ "^\\s\\+\\w.\\{-}="')
+      let lnum = matchlist(line, '\v^=(\d+)')[1]
     let s:other_signs_line_numbers[lnum] = 1
   endfor
 endfunction
